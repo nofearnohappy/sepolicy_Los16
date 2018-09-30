@@ -111,18 +111,11 @@ allow mediaserver drmserver:drmservice {
     pread
 };
 
-# only allow unprivileged socket ioctl commands
-allowxperm mediaserver self:{ rawip_socket tcp_socket udp_socket }
-  ioctl { unpriv_sock_ioctls unpriv_tty_ioctls };
-
 # Access to /data/media.
 # This should be removed if sdcardfs is modified to alter the secontext for its
 # accesses to the underlying FS.
 allow mediaserver media_rw_data_file:dir create_dir_perms;
 allow mediaserver media_rw_data_file:file create_file_perms;
-
-# Access to media in /data/preloads
-allow mediaserver preloads_media_file:file { getattr read ioctl };
 
 allow mediaserver ion_device:chr_file r_file_perms;
 allow mediaserver hal_graphics_allocator:fd use;
@@ -142,6 +135,3 @@ binder_call(mediaserver, mediacodec)
 # mediaserver should never execute any executable without a
 # domain transition
 neverallow mediaserver { file_type fs_type }:file execute_no_trans;
-
-# do not allow privileged socket ioctl commands
-neverallowxperm mediaserver domain:{ rawip_socket tcp_socket udp_socket } ioctl priv_sock_ioctls;

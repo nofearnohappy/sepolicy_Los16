@@ -46,9 +46,6 @@ allow system_server zygote:unix_stream_socket { getopt getattr };
 
 # system server gets network and bluetooth permissions.
 net_domain(system_server)
-# in addition to ioctls whitelisted for all domains, also allow system_server
-# to use privileged ioctls commands. Needed to set up VPNs.
-allowxperm system_server self:udp_socket ioctl priv_sock_ioctls;
 bluetooth_domain(system_server)
 
 # These are the capabilities assigned by the zygote to the
@@ -696,7 +693,6 @@ userdebug_or_eng(`
 
 # For AppFuse.
 allow system_server vold:fd use;
-allow system_server fuse_device:chr_file { read write ioctl getattr };
 allow system_server app_fuse_file:dir rw_dir_perms;
 allow system_server app_fuse_file:file { read write open getattr append };
 
@@ -708,7 +704,6 @@ allow system_server configfs:file { getattr open create unlink write };
 # Used for e.g. jdwp.
 allow system_server adbd:unix_stream_socket connectto;
 allow system_server adbd:fd use;
-allow system_server adbd:unix_stream_socket { getattr getopt ioctl read write shutdown };
 
 # Allow invoking tools like "timeout"
 allow system_server toolbox_exec:file rx_file_perms;

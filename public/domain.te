@@ -257,23 +257,6 @@ allow domain debugfs_trace_marker:file w_file_perms;
 allow domain fs_type:filesystem getattr;
 allow domain fs_type:dir getattr;
 
-# Restrict all domains to a whitelist for common socket types. Additional
-# ioctl commands may be added to individual domains, but this sets safe
-# defaults for all processes. Note that granting this whitelist to domain does
-# not grant the ioctl permission on these socket types. That must be granted
-# separately.
-allowxperm domain domain:{ rawip_socket tcp_socket udp_socket }
-  ioctl { unpriv_sock_ioctls unpriv_tty_ioctls };
-# default whitelist for unix sockets.
-allowxperm domain domain:{ unix_dgram_socket unix_stream_socket }
-  ioctl unpriv_unix_sock_ioctls;
-
-# Restrict PTYs to only whitelisted ioctls.
-# Note that granting this whitelist to domain does
-# not grant the wider ioctl permission. That must be granted
-# separately.
-allowxperm domain devpts:chr_file ioctl unpriv_tty_ioctls;
-
 # Workaround for policy compiler being too aggressive and removing hwservice_manager_type
 # when it's not explicitly used in allow rules
 allow { domain -domain } hwservice_manager_type:hwservice_manager { add find };
@@ -287,18 +270,6 @@ with_asan(`allow domain system_data_file:dir getattr;')
 ###
 ### neverallow rules
 ###
-
-# All socket ioctls must be restricted to a whitelist.
-neverallowxperm domain domain:socket_class_set ioctl { 0 };
-
-# b/68014825 and https://android-review.googlesource.com/516535
-# rfc6093 says that processes should not use the TCP urgent mechanism
-neverallowxperm domain domain:socket_class_set ioctl { SIOCATMARK };
-
-# TIOCSTI is only ever used for exploits. Block it.
-# b/33073072, b/7530569
-# http://www.openwall.com/lists/oss-security/2016/09/26/14
-neverallowxperm * devpts:chr_file ioctl TIOCSTI;
 
 # Do not allow any domain other than init to create unlabeled files.
 neverallow { domain -init -recovery } unlabeled:dir_file_class_set create;

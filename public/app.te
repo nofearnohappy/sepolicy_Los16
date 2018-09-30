@@ -50,9 +50,6 @@ userdebug_or_eng(`
 allow appdomain shell:process sigchld;
 allow appdomain adbd:process sigchld;
 
-# child shell or gdbserver pty access for runas.
-allow appdomain devpts:chr_file { getattr read write ioctl };
-
 # Use pipes and sockets provided by system_server via binder or local socket.
 allow appdomain system_server:fd use;
 allow appdomain system_server:fifo_file rw_file_perms;
@@ -269,7 +266,6 @@ allow { appdomain -isolated_app -ephemeral_app } media_rw_data_file:file create_
 #
 # USB devices are first opened by the system server (USBDeviceManagerService)
 # and the file descriptor is passed to the right Activity via binder.
-allow { appdomain -isolated_app -ephemeral_app } usb_device:chr_file { read write getattr ioctl };
 allow { appdomain -isolated_app -ephemeral_app } usbaccessory_device:chr_file { read write getattr };
 
 # For art.
@@ -299,10 +295,6 @@ allow { appdomain -isolated_app -ephemeral_app } keystore:keystore_key { get_sta
 use_keystore({ appdomain -isolated_app -ephemeral_app })
 
 allow appdomain console_device:chr_file { read write };
-
-# only allow unprivileged socket ioctl commands
-allowxperm { appdomain -bluetooth } self:{ rawip_socket tcp_socket udp_socket }
-  ioctl { unpriv_sock_ioctls unpriv_tty_ioctls };
 
 allow { appdomain -isolated_app } ion_device:chr_file rw_file_perms;
 # TODO is write really necessary ?
@@ -345,15 +337,10 @@ pdx_use({ appdomain -isolated_app -ephemeral_app }, bufferhub_client)
 allow appdomain runas_exec:file getattr;
 # Others are either allowed elsewhere or not desired.
 
-# Apps receive an open tun fd from the framework for
-# device traffic. Do not allow untrusted app to directly open tun_device
-allow { appdomain -isolated_app -ephemeral_app } tun_device:chr_file { read write getattr ioctl append };
-
 # Connect to adbd and use a socket transferred from it.
 # This is used for e.g. adb backup/restore.
 allow appdomain adbd:unix_stream_socket connectto;
 allow appdomain adbd:fd use;
-allow appdomain adbd:unix_stream_socket { getattr getopt ioctl read write shutdown };
 
 allow appdomain cache_file:dir getattr;
 

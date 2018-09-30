@@ -46,13 +46,6 @@ define(`unpriv_unix_sock_ioctls', `{
   TIOCOUTQ FIOCLEX TCGETS TIOCGWINSZ TIOCSWINSZ FIONREAD
 }')
 
-# commonly used TTY ioctls
-# merge with unpriv_unix_sock_ioctls?
-define(`unpriv_tty_ioctls', `{
-  TIOCOUTQ FIOCLEX TCGETS TCSETS TIOCGWINSZ TIOCSWINSZ TIOCSCTTY TCSETSW
-  TCFLSH TIOCSPGRP TIOCGPGRP
-}')
-
 # point to point ioctls
 define(`ppp_ioctls', `{
 PPPIOCGL2TPSTATS PPPIOCGCHAN PPPIOCATTCHAN PPPIOCDISCONN

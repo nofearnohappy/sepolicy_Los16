@@ -31,5 +31,3 @@ allow hal_cas tee_device:chr_file rw_file_perms;
 # domain transition
 neverallow hal_cas_server { file_type fs_type }:file execute_no_trans;
 
-# do not allow privileged socket ioctl commands
-neverallowxperm hal_cas_server domain:{ rawip_socket tcp_socket udp_socket } ioctl priv_sock_ioctls;

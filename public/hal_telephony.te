@@ -5,8 +5,6 @@ binder_call(hal_telephony_server, hal_telephony_client)
 add_hwservice(hal_telephony_server, hal_telephony_hwservice)
 allow hal_telephony_client hal_telephony_hwservice:hwservice_manager find;
 
-allowxperm hal_telephony_server self:udp_socket ioctl priv_sock_ioctls;
-
 allow hal_telephony_server self:netlink_route_socket nlmsg_write;
 allow hal_telephony_server kernel:system module_request;
 allow hal_telephony_server self:global_capability_class_set { setpcap setgid setuid net_admin net_raw };

@@ -10,9 +10,6 @@ allow netutils_wrapper proc_net:file { open read getattr };
 allow netutils_wrapper self:rawip_socket create_socket_perms;
 allow netutils_wrapper self:udp_socket create_socket_perms;
 allow netutils_wrapper self:global_capability_class_set net_admin;
-# ip utils need everything but ioctl
-allow netutils_wrapper self:netlink_route_socket ~ioctl;
-allow netutils_wrapper self:netlink_xfrm_socket ~ioctl;
 
 # For netutils (ndc) to be able to talk to netd
 allow netutils_wrapper netd_socket:sock_file { open getattr read write append };

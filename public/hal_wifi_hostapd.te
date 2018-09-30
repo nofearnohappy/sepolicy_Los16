@@ -13,11 +13,6 @@ allow hal_wifi_hostapd_server sysfs_net:dir search;
 allow hal_wifi_hostapd_server proc_net:file { getattr open read };
 
 # Various socket permissions.
-allowxperm hal_wifi_hostapd_server self:udp_socket ioctl priv_sock_ioctls;
-allow hal_wifi_hostapd_server self:netlink_socket create_socket_perms_no_ioctl;
-allow hal_wifi_hostapd_server self:netlink_generic_socket create_socket_perms_no_ioctl;
-allow hal_wifi_hostapd_server self:packet_socket create_socket_perms_no_ioctl;
-allow hal_wifi_hostapd_server self:netlink_route_socket nlmsg_write;
 
 ###
 ### neverallow rules

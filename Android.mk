@@ -6,7 +6,7 @@ include $(CLEAR_VARS)
 # SELinux policy version.
 # Must be <= /sys/fs/selinux/policyvers reported by the Android kernel.
 # Must be within the compatibility range reported by checkpolicy -V.
-POLICYVERS ?= 30
+POLICYVERS ?= 28
 
 MLS_SENS=1
 MLS_CATS=1024
@@ -143,8 +143,6 @@ sepolicy_build_files := security_classes \
                         policy_capabilities \
                         te_macros \
                         attributes \
-                        ioctl_defines \
-                        ioctl_macros \
                         *.te \
                         roles_decl \
                         roles \

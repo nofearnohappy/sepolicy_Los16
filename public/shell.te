@@ -210,9 +210,6 @@ allow shell vendor_shell_exec:file rx_file_perms;
 # capability.
 neverallow shell file_type:file link;
 
-# Do not allow privileged socket ioctl commands
-neverallowxperm shell domain:{ rawip_socket tcp_socket udp_socket } ioctl priv_sock_ioctls;
-
 # limit shell access to sensitive char drivers to
 # only getattr required for host side test.
 neverallow shell {
